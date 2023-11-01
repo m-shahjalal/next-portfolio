@@ -2,7 +2,7 @@
   "autoPlay": true,
   "background": {
     "color": {
-      "value": "#000"
+      "value": "#070c1e"
     },
     "image": "",
     "position": "",
@@ -270,7 +270,7 @@
         "length": 30,
         "fill": {
           "color": {
-            "value": "#000"
+            "value": "#070c1e"
           }
         }
       },
