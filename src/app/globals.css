@@ -10,37 +10,29 @@
 @import url("https://fonts.googleapis.com/css2?family=Teko:wght@600&display=swap");
 
 #custom-particle {
-  position: absolute;
-  left: calc(50% - 300px);
-  top: calc(50% - 300px);
+  position: fixed;
+  left: calc(50% - 200px);
+  top: calc(50% - 200px);
   margin: 0;
   padding: 0;
-  width: 600px;
-  height: 600px;
-  z-index: 10;
+  width: 400px;
+  height: 400px;
+  z-index: -1;
 }
 
 #custom-particle canvas {
   display: block;
-  vertical-align: bottom;
+  border-radius: 50%;
   -webkit-transform: scale(1);
   -ms-transform: scale(1);
   transform: scale(1);
   opacity: 1;
-  -webkit-transition: opacity 0.8s ease, -webkit-transform 1.4s ease;
-  transition: opacity 0.8s ease, transform 1.4s ease;
-  background-color: transparent !important;
 }
 
 html,
 body {
   font-size: 14px;
-  background: rgb(24, 7, 30);
-  background: linear-gradient(
-    246deg,
-    rgba(24, 7, 30, 1) 0%,
-    rgba(18, 9, 45, 1) 100%
-  );
+  background: #000011;
   color: #e1e0e3;
   font-family: "light";
 }
