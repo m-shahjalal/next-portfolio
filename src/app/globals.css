@@ -5,57 +5,25 @@
 @tailwind base;
 @tailwind utilities;
 
+@import url(./animate-border.css);
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Jost:wght@100;200;300;400;500;700;900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Teko:wght@600&display=swap");
 
 #custom-particle {
-  position: fixed;
-  left: calc(50% - 200px);
-  top: calc(50% - 200px);
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  top: 5px;
+  bottom: 5px;
   margin: 0;
   padding: 0;
-  width: 400px;
-  height: 400px;
-  z-index: -1;
-}
-
-#custom-particle canvas {
-  display: block;
-  border-radius: 50%;
-  -webkit-transform: scale(1);
-  -ms-transform: scale(1);
-  transform: scale(1);
-  opacity: 1;
+  z-index: 1;
 }
 
 html,
 body {
-  font-size: 14px;
   background: #000011;
   color: #e1e0e3;
-  font-family: "light";
-}
-
-@media (min-width: 1500px) {
-  html,
-  body {
-    font-size: 18px;
-  }
-}
-
-@media (min-width: 1200px) {
-  html,
-  body {
-    font-size: 16px;
-  }
-}
-
-@media (min-width: 768px) {
-  html,
-  body {
-    font-size: 12px;
-  }
+  font-family: "book";
 }
 
 @font-face {

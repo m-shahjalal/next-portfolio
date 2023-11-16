@@ -1,14 +1,7 @@
 .box {
   width: 500px;
-  height: 700px;
-  border-radius: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  position: relative;
-  overflow: hidden;
-  border: none;
+  height: 600px;
+  @apply rounded-lg border-none relative p-[10px] flex justify-center items-center;
 }
 
 .box::before {
@@ -39,7 +32,7 @@
   height: calc(100% - 3px);
   background-color: #000011;
   position: absolute;
-  border-radius: 16px;
+  border-radius: 8px;
   border: none;
 }
 

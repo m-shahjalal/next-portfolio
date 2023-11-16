@@ -2476,13 +2476,6 @@ tsparticles-particles.js@^2.12.0:
   dependencies:
     tsparticles-engine "^2.12.0"
 
-tsparticles-path-polygon@^2.12.0:
-  version "2.12.0"
-  resolved "https://registry.yarnpkg.com/tsparticles-path-polygon/-/tsparticles-path-polygon-2.12.0.tgz#13d7b35fbfae5fd89891e0e4896dcb42d37de2c3"
-  integrity sha512-o/9gfC5I4uqS3s8AINOOGdCRIiB4GAyOAQ6oNA0BOE5L4kC8UHsHpmKiTCSsKLnBTLl2/TAbk9lTjx2jFbhoRQ==
-  dependencies:
-    tsparticles-engine "^2.12.0"
-
 tsparticles-plugin-absorbers@^2.12.0:
   version "2.12.0"
   resolved "https://registry.yarnpkg.com/tsparticles-plugin-absorbers/-/tsparticles-plugin-absorbers-2.12.0.tgz#911467e579ea5578b09bf4e5e44e2b3ef5ae308d"
