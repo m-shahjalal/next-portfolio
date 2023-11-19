@@ -1,6 +1,9 @@
 const Background = () => {
   return (
-    <div className="absolute top-0 right-0 left-0 bottom-0" id="bg-wrap">
+    <div
+      className="fixed top-0 -z-10 right-0 bg-[#000011] left-0 bottom-0"
+      id="bg-wrap"
+    >
       <svg
         viewBox="0 0 100 300"
         opacity={0.2}
@@ -21,8 +24,8 @@ const Background = () => {
               values="0%;3%;0%"
               repeatCount="indefinite"
             ></animate>
-            <stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop>
-            <stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop>
+            <stop offset="0%" stopColor="rgba(255, 0, 255, 1)"></stop>
+            <stop offset="100%" stopColor="rgba(255, 0, 255, 0)"></stop>
           </radialGradient>
           <radialGradient
             id="Gradient2"
@@ -38,8 +41,8 @@ const Background = () => {
               values="0%;3%;0%"
               repeatCount="indefinite"
             ></animate>
-            <stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop>
-            <stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop>
+            <stop offset="0%" stopColor="rgba(255, 255, 0, 1)"></stop>
+            <stop offset="100%" stopColor="rgba(255, 255, 0, 0)"></stop>
           </radialGradient>
           <radialGradient
             id="Gradient3"
@@ -55,8 +58,8 @@ const Background = () => {
               values="0%;3%;0%"
               repeatCount="indefinite"
             ></animate>
-            <stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop>
-            <stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop>
+            <stop offset="0%" stopColor="rgba(0, 255, 255, 1)"></stop>
+            <stop offset="100%" stopColor="rgba(0, 255, 255, 0)"></stop>
           </radialGradient>
           <radialGradient
             id="Gradient4"
@@ -72,8 +75,8 @@ const Background = () => {
               values="0%;5%;0%"
               repeatCount="indefinite"
             ></animate>
-            <stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop>
-            <stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop>
+            <stop offset="0%" stopColor="rgba(0, 255, 0, 1)"></stop>
+            <stop offset="100%" stopColor="rgba(0, 255, 0, 0)"></stop>
           </radialGradient>
           <radialGradient
             id="Gradient5"
@@ -89,8 +92,8 @@ const Background = () => {
               values="0%;5%;0%"
               repeatCount="indefinite"
             ></animate>
-            <stop offset="0%" stop-color="rgba(0,0,255, .8)"></stop>
-            <stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop>
+            <stop offset="0%" stopColor="rgba(0,0,255, .8)"></stop>
+            <stop offset="100%" stopColor="rgba(0,0,255, 0)"></stop>
           </radialGradient>
           <radialGradient
             id="Gradient6"
@@ -106,8 +109,8 @@ const Background = () => {
               values="0%;5%;0%"
               repeatCount="indefinite"
             ></animate>
-            <stop offset="0%" stop-color="rgba(255,0,0, .5)"></stop>
-            <stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop>
+            <stop offset="0%" stopColor="rgba(255,0,0, .5)"></stop>
+            <stop offset="100%" stopColor="rgba(255,0,0, 0)"></stop>
           </radialGradient>
         </defs>
         <rect x="0" y="0" width="100%" height="100%" fill="url(#Gradient4)">

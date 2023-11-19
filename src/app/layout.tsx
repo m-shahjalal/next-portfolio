@@ -1,11 +1,10 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import Header from "@/components/Header/Header";
 import Background from "@/components/Header/Background";
+import Header from "@/components/Header/Header";
+import type { Metadata } from "next";
+import { Jost } from "next/font/google";
+import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
-
+const font = Jost({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Shahjalal -Portfolio",
   description: "A creation of shahjalal's works",
@@ -17,8 +16,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html suppressHydrationWarning={true} lang="en">
+      <body className={font.className}>
         <header>
           <Header />
         </header>

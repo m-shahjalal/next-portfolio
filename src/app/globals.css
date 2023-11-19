@@ -2,47 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
-@tailwind base;
-@tailwind utilities;
-
-@import url(./animate-border.css);
-@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&display=swap");
-
-#custom-particle {
-  position: absolute;
-  left: 5px;
-  right: 5px;
-  top: 5px;
-  bottom: 5px;
-  margin: 0;
-  padding: 0;
-  z-index: 1;
+@layer {
+  html,
+  body {
+    @apply bg-transparent text-[#e1e0e3] overflow-hidden;
+  }
+  ::-webkit-scrollbar {
+    width: 0;
+  }
+  .card-shadow {
+    box-shadow: 0px 0px 10px 5px #ffffff10;
+  }
 }
 
-html,
-body {
-  background: #000011;
-  color: #e1e0e3;
-  font-family: "book";
+.mouse-effect {
+  @apply w-0 h-0 fixed -left-full;
+  box-shadow: 0 0 500px 300px #ffffff15;
 }
 
-@font-face {
-  font-family: "book";
-  src: url("../fonts/book.otf");
-}
-@font-face {
-  font-family: "hairline";
-  src: url("../fonts/hairline.otf");
-}
-@font-face {
-  font-family: "light";
-  src: url("../fonts/light.otf");
+.box {
+  @apply rounded-lg border-none relative flex justify-center items-center overflow-hidden;
 }
 
-@font-face {
-  font-family: "regular";
-  src: url("../fonts/regular.otf");
+.box::before {
+  @apply w-screen aspect-square rotate-45 border-none absolute content-[''] overflow-hidden;
+  background: conic-gradient(
+    #ff2e2e,
+    #ff831e,
+    #fcff51,
+    #58ff57,
+    #575fff,
+    #d257ff,
+    #ff57e5,
+    #ff1556,
+    #ffff44
+  );
+  animation: rotate 10s linear infinite;
 }
-::-webkit-scrollbar {
-  width: 0; /* Remove scrollbar space */
+
+.box::after {
+  @apply content-[''] w-[calc(100%-3px)] h-[calc(100%-3px)] bg-[#0e0e18] absolute rounded-lg border-none;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes left-to-right {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes right-to-left {
+  0% {
+    left: 100%;
+  }
+  100% {
+    left: -100%;
+  }
 }
