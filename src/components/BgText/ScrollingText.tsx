@@ -44,7 +44,7 @@ const ScrollingText = () => {
         width={250}
         alt="logo"
       />
-      <div className="overflow-hidden inline-block whitespace-nowrap fixed  left-[calc(100%+200px)] opacity-[.02] animate-scrollReverse -bottom-10 text-[200px] font-bold">
+      <div className="overflow-hidden inline-block whitespace-nowrap fixed  left-full opacity-[.02] animate-scrollReverse -bottom-10 text-[200px] font-bold">
         {selectedQuote}
       </div>
     </>

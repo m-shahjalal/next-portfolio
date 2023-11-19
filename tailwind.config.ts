@@ -15,7 +15,7 @@ const config: Config = {
       },
       animation: {
         scroll: "left-to-right 50s linear 1s infinite alternate",
-        scrollReverse: "right-to-left 50s linear 1s infinite alternate",
+        scrollReverse: "right-to-left 20s linear 1s infinite alternate",
       },
     },
   },
