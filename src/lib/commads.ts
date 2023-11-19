@@ -42,9 +42,6 @@ export const commands = [
   {
     input: InputList.pwd,
     output: (value: any) => value,
-    type: OutputType.INFO
+    type: OutputType.INFO,
   },
-  {
-    input: InputList.
-  }
 ];
