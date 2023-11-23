@@ -7,7 +7,7 @@ export interface Command {
   trigger?: string;
   inputValue?: string;
 }
-
+export const defaultText: string = "type something cool!🥶";
 export const commands: Command[] = [
   {
     input: InputList.home,
@@ -17,14 +17,8 @@ export const commands: Command[] = [
   {
     input: InputList.about,
     output: () =>
-      "Once, I learned HTML to hack NASA 🚀, but I failed, since than, I started learning technologies to hack myself.",
+      "Once, I learned HTML to hack NASA 🚀, but I failed, since than, trying to hack myself.",
     type: OutputType.INFO,
-  },
-  {
-    input: InputList.notFound,
-    output: () =>
-      "Sad, Command not found!, Actually, I'm not myself today! I need a party.🥶",
-    type: OutputType.ERROR,
   },
   {
     input: InputList.works,
@@ -49,7 +43,43 @@ export const commands: Command[] = [
   },
   {
     input: InputList.pwd,
-    output: (value: any) => value,
+    output: () => "/shahjalal",
     type: OutputType.INFO,
+  },
+  {
+    input: InputList.notFound,
+    output: () =>
+      "Sad, Command not found!, Actually, I'm not myself today! I need a party.🥶",
+    type: OutputType.ERROR,
+  },
+  {
+    input: InputList.hello,
+    output: (value) => "Hi",
+    type: OutputType.INFO,
+  },
+  {
+    input: InputList.hi,
+    output: (value) => "Hello",
+    type: OutputType.INFO,
+  },
+  {
+    input: InputList.fuck,
+    output: (value) => "I see your vocabulary's working out at the gym.",
+    type: OutputType.INFO,
+  },
+  {
+    input: InputList.history,
+    output: (value) => value,
+    type: OutputType.INFO,
+  },
+  {
+    input: InputList.help,
+    output: () => {
+      const list = Object.values(InputList)
+        .map((item, index) => `${index + 1}. ${item}`)
+        .join("\n");
+      return `Those are valid commands, Try them\n ${list}`;
+    },
+    type: OutputType.HELP,
   },
 ];

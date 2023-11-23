@@ -1,3 +1,6 @@
+import { InputList } from "@/enums/outputType";
+import { Command } from "@/lib/commands";
+import useGlobalStore from "@/store/useGlobalStore";
 import { Fira_Code } from "next/font/google";
 import React from "react";
 import { FaLongArrowAltRight } from "react-icons/fa";
@@ -7,29 +10,31 @@ const firaCode = Fira_Code({
   preload: false,
 });
 
-export const History = ({ command }: { command: any }) => {
-  console.log("history", command?.[0]?.output());
+export const History = ({ command }: { command: Command }) => {
+  const history = useGlobalStore((state) => state.history);
+  let output = command.inputValue?.replace(/echo /gi, "");
+  if (command.input === InputList.history) {
+    output = history.map((item) => item.inputValue).join("\n");
+  }
   return (
     <div>
-      {/* <div className={`text-yellow-400 flex ${firaCode.className}`}>
+      <div className={`text-yellow-400 flex ${firaCode.className}`}>
         <p
           className="flex justify-center items-center"
           style={{ fontFamily: "Fira Code, monospace" }}
         >
           root <FaLongArrowAltRight size="20px" />
         </p>
-        <form>
-          <input
-            value={command.value}
-            readOnly
-            type="text"
-            name="command"
-            className="bg-transparent outline-none ml-1 -mt-[2px] text-green-500 w-full"
-          />
-        </form>
+        <p className="bg-transparent outline-none ml-1 -mt-[2px] text-green-500 w-full">
+          {command.inputValue}
+        </p>
       </div>
-      <div>{command.output()}</div> */}
-      <pre>{JSON.stringify(command, null, 4)}</pre>
+      <div className="whitespace-pre-wrap">{command.output(output)}</div>
+      {command.input === InputList.notFound && (
+        <div className="text-red-500">
+          --Type <b>&ldquo;help&rdquo;</b> to get instruction.
+        </div>
+      )}
     </div>
   );
 };

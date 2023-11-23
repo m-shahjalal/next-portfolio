@@ -1,8 +1,9 @@
 import { Fira_Code } from "next/font/google";
 import { FormEvent, LegacyRef, forwardRef, useState } from "react";
 import { FaLongArrowAltRight } from "react-icons/fa";
-import { Command, commands } from "@/lib/commands";
+import { Command, commands, defaultText } from "@/lib/commands";
 import useGlobalStore from "@/store/useGlobalStore";
+import { InputList } from "@/enums/outputType";
 
 const firaCode = Fira_Code({
   weight: "400",
@@ -13,18 +14,37 @@ const Host = forwardRef(function Host(
   _,
   ref: LegacyRef<HTMLInputElement> | undefined
 ) {
-  const [value, setValue] = useState("");
+  const value = useGlobalStore((state) => state.typing);
+  const setValue = useGlobalStore((state) => state.handleInput);
   const handleCommand = useGlobalStore((state) => state.handleCommand);
+  const clearHistory = useGlobalStore((state) => state.clearHistory);
+  const clearInput = useGlobalStore((state) => state.clearInput);
 
   const handleTrigger = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const input = value.toLowerCase().trim();
+    if (input === InputList.clear) return clearHistory();
+    if (input === defaultText) return clearInput();
 
-    const target = commands.find((item) => item.input === value);
-    if (target) target.inputValue = value;
+    if (input.startsWith("echo")) {
+      const target = commands.find((item) => item.input === InputList.echo);
+      if (target) {
+        target.inputValue = value;
+        return handleCommand(target);
+      }
+    }
 
-    const notFound = commands[commands.length - 1];
-    notFound.inputValue = value;
-    handleCommand(target || notFound);
+    const target = commands.find((item) => item.input === input);
+    if (target) {
+      target.inputValue = value;
+      return handleCommand(target);
+    }
+
+    const notFound = commands.find((item) => item.input === InputList.notFound);
+    if (notFound) {
+      notFound.inputValue = value;
+      handleCommand(notFound);
+    }
   };
 
   return (
@@ -42,7 +62,8 @@ const Host = forwardRef(function Host(
           ref={ref}
           type="text"
           name="command"
-          className="bg-transparent outline-none ml-1 -mt-[2px] text-green-500 w-full"
+          aria-autocomplete="none"
+          className="bg-transparent outline-none ml-1 -mt-[2px] text-green-500 w-full -translate-y-[2px]"
         />
       </form>
     </div>
