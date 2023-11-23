@@ -1,6 +1,8 @@
 import { Fira_Code } from "next/font/google";
 import { FormEvent, LegacyRef, forwardRef, useState } from "react";
 import { FaLongArrowAltRight } from "react-icons/fa";
+import { Command, commands } from "@/lib/commands";
+import useGlobalStore from "@/store/useGlobalStore";
 
 const firaCode = Fira_Code({
   weight: "400",
@@ -11,11 +13,18 @@ const Host = forwardRef(function Host(
   _,
   ref: LegacyRef<HTMLInputElement> | undefined
 ) {
-  const [value, setValue] = useState("Type something cool🥶!");
+  const [value, setValue] = useState("");
+  const handleCommand = useGlobalStore((state) => state.handleCommand);
 
   const handleTrigger = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(value);
+
+    const target = commands.find((item) => item.input === value);
+    if (target) target.inputValue = value;
+
+    const notFound = commands[commands.length - 1];
+    notFound.inputValue = value;
+    handleCommand(target || notFound);
   };
 
   return (

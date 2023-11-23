@@ -1,6 +1,14 @@
 import { InputList, OutputType } from "@/enums/outputType";
 
-export const commands = [
+export interface Command {
+  input: InputList;
+  output: (value?: any) => string;
+  type: OutputType;
+  trigger?: string;
+  inputValue?: string;
+}
+
+export const commands: Command[] = [
   {
     input: InputList.home,
     output: () => "🔥Welcome to Nerd World!",
