@@ -41,7 +41,7 @@ export default function Home() {
             expand ? "w-[400px]" : "w-10"
           }`}
         >
-          <div className="bg-gray-900 border-2 rounded-lg border-red-600 w-full h-full overflow-auto">
+          <div className="rounded-lg bg-opacity-50 card-shadow border border-gray-500 backdrop-blur-xl w-full h-full overflow-auto">
             <div className="z-10 h-full w-full relative">
               <LuArrowBigRightDash
                 onClick={() => setExpand()}

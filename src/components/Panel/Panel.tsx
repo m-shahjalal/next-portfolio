@@ -7,7 +7,7 @@ import { History } from "./History";
 const firaCode = Fira_Code({ subsets: ["latin"] });
 
 const Panel = () => {
-  const history = useGlobalStore((state) => state.history);
+  const history = useGlobalStore((state) => state.currentHistory);
   const focusRef = useRef<HTMLInputElement>(null);
   useEffect(() => focusRef.current?.focus(), []);
 

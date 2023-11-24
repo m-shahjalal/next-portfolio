@@ -83,4 +83,9 @@ export const commands: Command[] = [
     },
     type: OutputType.HELP,
   },
+  {
+    input: InputList.exit,
+    output: () => "exit!",
+    type: OutputType.WORN,
+  }
 ];

@@ -26,6 +26,8 @@ const Host = forwardRef(function Host(
     e.preventDefault();
 
     const input = value.toLowerCase().trim();
+    if (!input) return;
+
     if (input === InputList.clear) return clearHistory();
     if (input === defaultText) return clearInput();
 
@@ -38,7 +40,10 @@ const Host = forwardRef(function Host(
     if (target) {
       target.id = uuid();
       target.inputValue = value;
-      if (target.input === InputList.exit) toggleTerminal();
+      if (target.input === InputList.exit) {
+        toggleTerminal();
+        return clearHistory();
+      }
       return handleCommand({ ...target });
     }
 
