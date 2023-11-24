@@ -8,6 +8,7 @@ interface GlobalState {
   commands: Command[];
   history: Command[];
   typing: string;
+  isExpand: boolean;
 }
 
 interface GlobalStore extends GlobalState {
@@ -16,6 +17,7 @@ interface GlobalStore extends GlobalState {
   handleInput: (str: string) => void;
   clearHistory: () => void;
   clearInput: () => void;
+  toggleTerminal: () => void;
 }
 
 const initialState: Pick<GlobalStore, keyof GlobalState> = {
@@ -23,6 +25,7 @@ const initialState: Pick<GlobalStore, keyof GlobalState> = {
   commands: commands,
   history: [],
   typing: defaultText,
+  isExpand: false,
 };
 
 const useGlobalStore = create<GlobalStore>()(
@@ -48,6 +51,7 @@ const useGlobalStore = create<GlobalStore>()(
       },
       clearHistory: () => set({ history: [], typing: "" }),
       clearInput: () => set({ typing: "" }),
+      toggleTerminal: () => set(state => ({isExpand: !state.isExpand}))
     }),
     "Zustand triggered =>"
   )

@@ -1,6 +1,7 @@
 import { InputList, OutputType } from "@/enums/outputType";
 
 export interface Command {
+  id?: number;
   input: InputList;
   output: (value?: any) => string;
   type: OutputType;

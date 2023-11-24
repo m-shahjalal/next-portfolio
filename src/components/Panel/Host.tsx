@@ -4,6 +4,7 @@ import { FaLongArrowAltRight } from "react-icons/fa";
 import { Command, commands, defaultText } from "@/lib/commands";
 import useGlobalStore from "@/store/useGlobalStore";
 import { InputList } from "@/enums/outputType";
+import { uuid } from "@/utils/uniqueId";
 
 const firaCode = Fira_Code({
   weight: "400",
@@ -19,31 +20,33 @@ const Host = forwardRef(function Host(
   const handleCommand = useGlobalStore((state) => state.handleCommand);
   const clearHistory = useGlobalStore((state) => state.clearHistory);
   const clearInput = useGlobalStore((state) => state.clearInput);
+  const toggleTerminal = useGlobalStore((state) => state.toggleTerminal);
 
   const handleTrigger = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const input = value.toLowerCase().trim();
     if (input === InputList.clear) return clearHistory();
     if (input === defaultText) return clearInput();
 
-    if (input.startsWith("echo")) {
-      const target = commands.find((item) => item.input === InputList.echo);
-      if (target) {
-        target.inputValue = value;
-        return handleCommand(target);
-      }
-    }
+    const target = commands.find((item) => {
+      return input.startsWith("echo")
+        ? item.input === InputList.echo
+        : item.input === input;
+    });
 
-    const target = commands.find((item) => item.input === input);
     if (target) {
+      target.id = uuid();
       target.inputValue = value;
-      return handleCommand(target);
+      if (target.input === InputList.exit) toggleTerminal();
+      return handleCommand({ ...target });
     }
 
     const notFound = commands.find((item) => item.input === InputList.notFound);
     if (notFound) {
+      notFound.id = uuid();
       notFound.inputValue = value;
-      handleCommand(notFound);
+      handleCommand({ ...notFound });
     }
   };
 

@@ -2,6 +2,7 @@
 import BackPart from "@/components/Card/BackPart";
 import FontPart from "@/components/Card/FontPart";
 import Panel from "@/components/Panel/Panel";
+import useGlobalStore from "@/store/useGlobalStore";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { LuArrowBigRightDash } from "react-icons/lu";
@@ -13,7 +14,8 @@ const ScrollingText = dynamic(
 
 export default function Home() {
   const [isFont, setFont] = useState(false);
-  const [expand, setExpand] = useState(false);
+  const expand = useGlobalStore((state) => state.isExpand);
+  const setExpand = useGlobalStore((state) => state.toggleTerminal);
 
   return (
     <div className="w-full flex justify-center items-center h-screen gap-10 relative">
@@ -39,10 +41,10 @@ export default function Home() {
             expand ? "w-[400px]" : "w-10"
           }`}
         >
-          <div className="box w-full h-full">
+          <div className="bg-gray-900 border-2 rounded-lg border-red-600 w-full h-full overflow-auto">
             <div className="z-10 h-full w-full relative">
               <LuArrowBigRightDash
-                onClick={() => setExpand(!expand)}
+                onClick={() => setExpand()}
                 size="30px"
                 className={`translate-y-48 translate-x-1 transition-all duration-1000 cursor-pointer text-green-500 ${
                   expand ? "rotate-180 translate-y-[6px]" : ""
