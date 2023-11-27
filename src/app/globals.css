@@ -13,44 +13,24 @@
   .card-shadow {
     box-shadow: 0px 0px 10px 5px #ffffff10;
   }
+  .animated-border {
+    border: 2px solid transparent;
+    animation: borderAnimation 2s infinite alternate-reverse;
+    border-radius: 16px;
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    border: double 1em transparent;
+    background-image: linear-gradient(
+        rgba(25rgba (255, 255, 255, 0) 5, 255, 0),
+        rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(to right, green, gold);
+  }
 }
 
 .mouse-effect {
   @apply w-0 h-0 fixed -left-full;
   box-shadow: 0 0 500px 300px #ffffff15;
-}
-
-.box {
-  @apply rounded-lg border-none relative flex justify-center items-center overflow-hidden;
-}
-
-.box::before {
-  @apply w-screen aspect-square rotate-45 border-none absolute content-[''] overflow-hidden;
-  background: conic-gradient(
-    #ff2e2e,
-    #ff831e,
-    #fcff51,
-    #58ff57,
-    #575fff,
-    #d257ff,
-    #ff57e5,
-    #ff1556,
-    #ffff44
-  );
-  animation: rotate 10s linear infinite;
-}
-
-.box::after {
-  @apply content-[''] w-[calc(100%-3px)] h-[calc(100%-3px)] bg-[#0e0e18] absolute rounded-lg border-none;
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 @keyframes left-to-right {
@@ -68,5 +48,83 @@
   }
   100% {
     left: -100%;
+  }
+}
+
+@keyframes borderAnimation {
+  0% {
+    border-image: linear-gradient(
+      45deg,
+      #ff2e2e,
+      #ff831e,
+      #fcff51,
+      #58ff57,
+      #575fff,
+      #d257ff,
+      #ff57e5,
+      #ff1556,
+      #ffff44
+    );
+    border-image-slice: 1;
+  }
+  25% {
+    border-image: linear-gradient(
+      45deg,
+      #ff831e,
+      #fcff51,
+      #58ff57,
+      #575fff,
+      #d257ff,
+      #ff57e5,
+      #ff1556,
+      #ffff44,
+      #ff2e2e
+    );
+    border-image-slice: 1;
+  }
+  50% {
+    border-image: linear-gradient(
+      45deg,
+      #fcff51,
+      #58ff57,
+      #575fff,
+      #d257ff,
+      #ff57e5,
+      #ff1556,
+      #ffff44,
+      #ff2e2e,
+      #ff831e
+    );
+    border-image-slice: 1;
+  }
+  75% {
+    border-image: linear-gradient(
+      45deg,
+      #58ff57,
+      #575fff,
+      #d257ff,
+      #ff57e5,
+      #ff1556,
+      #ffff44,
+      #ff2e2e,
+      #ff831e,
+      #fcff51
+    );
+    border-image-slice: 1;
+  }
+  100% {
+    border-image: linear-gradient(
+      45deg,
+      #575fff,
+      #d257ff,
+      #ff57e5,
+      #ff1556,
+      #ffff44,
+      #ff2e2e,
+      #ff831e,
+      #fcff51,
+      #58ff57
+    );
+    border-image-slice: 1;
   }
 }

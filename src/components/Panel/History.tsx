@@ -17,15 +17,15 @@ export const History = ({ command }: { command: Command }) => {
     output = history.map((item) => item.inputValue).join("\n");
   }
   return (
-    <div>
+    <div className="m-1">
       <div className={`text-yellow-400 flex ${firaCode.className}`}>
         <p
           className="flex justify-center items-center"
           style={{ fontFamily: "Fira Code, monospace" }}
         >
-          root <FaLongArrowAltRight size="20px" />
+          @m-shahjalal <FaLongArrowAltRight size="20px" />
         </p>
-        <p className="bg-transparent outline-none ml-1 -mt-[2px] text-green-500 w-full">
+        <p className="bg-transparent outline-none ml-1 -mt-[2px] text-green-500 w-fit">
           {command.inputValue}
         </p>
       </div>

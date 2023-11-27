@@ -1,10 +1,16 @@
-import { Fira_Code } from "next/font/google";
-import { FormEvent, LegacyRef, forwardRef, useState } from "react";
-import { FaLongArrowAltRight } from "react-icons/fa";
-import { Command, commands, defaultText } from "@/lib/commands";
-import useGlobalStore from "@/store/useGlobalStore";
 import { InputList } from "@/enums/outputType";
+import { commands, defaultText } from "@/lib/commands";
+import useGlobalStore from "@/store/useGlobalStore";
 import { uuid } from "@/utils/uniqueId";
+import { Fira_Code } from "next/font/google";
+import {
+  FormEvent,
+  KeyboardEvent,
+  LegacyRef,
+  forwardRef,
+  useEffect,
+} from "react";
+import { FaLongArrowAltRight } from "react-icons/fa";
 
 const firaCode = Fira_Code({
   weight: "400",
@@ -27,9 +33,7 @@ const Host = forwardRef(function Host(
 
     const input = value.toLowerCase().trim();
     if (!input) return;
-
     if (input === InputList.clear) return clearHistory();
-    if (input === defaultText) return clearInput();
 
     const target = commands.find((item) => {
       return input.startsWith("echo")
@@ -55,18 +59,23 @@ const Host = forwardRef(function Host(
     }
   };
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.currentTarget.value === defaultText) setValue("");
+  };
+
   return (
-    <div className={`text-yellow-400 flex ${firaCode.className}`}>
+    <div className={`text-yellow-400 flex p-1 ${firaCode.className}`}>
       <p
         className="flex justify-center items-center"
         style={{ fontFamily: "Fira Code, monospace" }}
       >
-        root <FaLongArrowAltRight size="20px" />
+        @m-shahjalal <FaLongArrowAltRight size="20px" />
       </p>
       <form onSubmit={handleTrigger}>
         <input
           value={value}
           onChange={(e) => setValue(e.target.value)}
+          onKeyDown={handleKeyDown}
           ref={ref}
           type="text"
           name="command"

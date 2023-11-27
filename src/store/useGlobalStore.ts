@@ -27,7 +27,7 @@ const initialState: Pick<GlobalStore, keyof GlobalState> = {
   history: [],
   currentHistory: [],
   typing: defaultText,
-  isExpand: true,
+  isExpand: false,
 };
 
 const useGlobalStore = create<GlobalStore>()(
@@ -45,12 +45,6 @@ const useGlobalStore = create<GlobalStore>()(
           typing: "",
         }));
       },
-      handleInput: (str) => {
-        const prevText = str.slice(0, -1);
-        if (prevText === defaultText)
-          return set({ typing: str.charAt(str.length - 1) });
-        set({ typing: str });
-      },
       clearHistory: () =>
         set((state) => {
           return {
@@ -60,6 +54,7 @@ const useGlobalStore = create<GlobalStore>()(
           };
         }),
       clearInput: () => set({ typing: "" }),
+      handleInput: (str) => set({ typing: str }),
       toggleTerminal: () => set((state) => ({ isExpand: !state.isExpand })),
     }),
     "Zustand triggered =>"

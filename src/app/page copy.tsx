@@ -2,9 +2,11 @@
 import BackPart from "@/components/Card/BackPart";
 import FontPart from "@/components/Card/FontPart";
 import Container from "@/components/Panel/Container";
+import Panel from "@/components/Panel/Panel";
 import useGlobalStore from "@/store/useGlobalStore";
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import { LuArrowBigRightDash } from "react-icons/lu";
 import Tilt from "react-parallax-tilt";
 const ScrollingText = dynamic(
   () => import("@/components/BgText/ScrollingText"),
@@ -32,7 +34,7 @@ export default function Home() {
             >
               🚀
             </span>
-            {isFont ? <BackPart /> : <FontPart />}
+            {/* {isFont ? <BackPart /> : <FontPart />} */}
           </div>
         </Tilt>
         <div

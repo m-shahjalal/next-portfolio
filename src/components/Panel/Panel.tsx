@@ -11,10 +11,20 @@ const Panel = () => {
   const focusRef = useRef<HTMLInputElement>(null);
   useEffect(() => focusRef.current?.focus(), []);
 
+  useEffect(() => {
+    if (focusRef.current) {
+      focusRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+        inline: "start",
+      });
+    }
+  }, [history, focusRef]);
+
   return (
     <div
       onClick={() => focusRef.current?.focus()}
-      className={`relative w-full h-full p-2 ${firaCode.className}`}
+      className={`relative w-full overflow-y-auto h-[calc(100%-36px)] p-2 ${firaCode.className}`}
     >
       {history.map((item) => (
         <div className="flex" key={item.id}>
