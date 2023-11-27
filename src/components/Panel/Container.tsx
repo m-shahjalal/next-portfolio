@@ -9,7 +9,7 @@ interface IContainer {
 
 const Container = ({ expand, setExpand }: IContainer) => {
   return (
-    <div className="animated-border !border rounded-xl w-full h-full">
+    <div className="animated-border !border-[4px] rounded-xl w-full h-full">
       <LuArrowBigRightDash
         onClick={() => setExpand()}
         size="30px"

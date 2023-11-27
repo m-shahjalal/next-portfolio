@@ -80,6 +80,7 @@ const Host = forwardRef(function Host(
           type="text"
           name="command"
           aria-autocomplete="none"
+          autoComplete="off"
           className="bg-transparent outline-none ml-1 -mt-[2px] text-green-500 w-full -translate-y-[2px]"
         />
       </form>
