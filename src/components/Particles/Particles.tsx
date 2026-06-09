@@ -1,7 +1,7 @@
 "use client";
 import ReactParticles from "react-tsparticles";
 import { loadFull } from "tsparticles";
-import { Engine, tsParticles } from "tsparticles-engine";
+import type { Engine } from "tsparticles-engine";
 
 const Particles = ({ options }: { options: object }) => {
   const init = async (engine: Engine) => await loadFull(engine);
