@@ -17,19 +17,19 @@ export const History = ({ command }: { command: Command }) => {
     output = history.map((item) => item.inputValue).join("\n");
   }
   return (
-    <div className="m-1">
-      <div className={`text-yellow-400 flex ${firaCode.className}`}>
-        <p
-          className="flex justify-center items-center"
-          style={{ fontFamily: "Fira Code, monospace" }}
-        >
-          @m-shahjalal <FaLongArrowAltRight size="20px" />
+    <div className="my-1.5 font-mono text-sm">
+      <div className="flex items-center gap-2 text-emerald-400">
+        <p className="flex items-center gap-1 select-none">
+          <span>m-shahjalal</span>
+          <span className="text-cyan-400 font-bold">❯</span>
         </p>
-        <p className="bg-transparent outline-none ml-1 -mt-[2px] text-green-500 w-fit">
+        <p className="text-slate-300">
           {command.inputValue}
         </p>
       </div>
-      <div className="whitespace-pre-wrap">{command.output(output)}</div>
+      <div className="whitespace-pre-wrap mt-1 text-slate-400 pl-4 border-l border-emerald-500/10">
+        {command.output(output)}
+      </div>
       {command.input === InputList.notFound && (
         <div className="text-red-500">
           --Type <b>&ldquo;help&rdquo;</b> to get instruction.

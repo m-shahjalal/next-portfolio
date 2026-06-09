@@ -1,48 +1,87 @@
 "use client";
-import BackPart from "@/components/Card/BackPart";
 import FontPart from "@/components/Card/FontPart";
 import Container from "@/components/Panel/Container";
 import useGlobalStore from "@/store/useGlobalStore";
 import dynamic from "next/dynamic";
-import { useState } from "react";
-import Tilt from "react-parallax-tilt";
+
 const ScrollingText = dynamic(
   () => import("@/components/BgText/ScrollingText"),
   { ssr: false }
 );
 
+
 export default function Home() {
-  const [isFont, setFont] = useState(false);
   const expand = useGlobalStore((state) => state.isExpand);
   const setExpand = useGlobalStore((state) => state.toggleTerminal);
 
   return (
-    <div className="w-full flex justify-center items-center h-screen gap-10 relative">
+    <div className="w-full flex flex-col justify-center items-center h-screen relative overflow-hidden bg-[#03030d] px-4">
       <ScrollingText />
-      <div
-        className={`relative top-0 bottom-0 w-full flex justify-center items-center transition-all duration-1000 ${
-          expand ? "-translate-x-52" : ""
-        }`}
-      >
-        <Tilt tiltMaxAngleX={1} tiltMaxAngleY={1} perspective={500}>
-          <div className="rounded-lg flex justify-center items-center card-shadow border border-gray-500 backdrop-blur-xl aspect-video h-[400px]">
-            <span
-              onClick={() => setFont(!isFont)}
-              className="bottom-4 border p-1 rounded-full absolute left-4 aspect-square w-9 flex justify-center items-center cursor-pointer z-50"
-            >
-              🚀
-            </span>
-            {isFont ? <BackPart /> : <FontPart />}
-          </div>
-        </Tilt>
-        <div
-          className={`h-[400px] absolute left-[calc(50vw+365px)] rounded-lg transition-all ${
-            expand ? "w-[400px]" : "w-10"
-          }`}
+
+      {/* Mobile Tab Selector */}
+      <div className="flex md:hidden bg-white/5 border border-white/10 rounded-full p-1 backdrop-blur-md mb-6 z-20 select-none">
+        <button
+          onClick={() => { if (expand) setExpand(); }}
+          className={`px-4 py-1.5 rounded-full text-xs font-mono transition-all duration-300 ${!expand
+            ? "bg-emerald-500 text-[#03030d] font-bold shadow-lg"
+            : "text-slate-400 hover:text-white"
+            }`}
         >
-          <div className="rounded-lg bg-opacity-50 card-shadow backdrop-blur-xl w-full h-full overflow-auto">
-            <Container expand={expand} setExpand={setExpand} />
+          Overview
+        </button>
+        <button
+          onClick={() => { if (!expand) setExpand(); }}
+          className={`px-4 py-1.5 rounded-full text-xs font-mono transition-all duration-300 ${expand
+            ? "bg-emerald-500 text-[#03030d] font-bold shadow-lg"
+            : "text-slate-400 hover:text-white"
+            }`}
+        >
+          Console
+        </button>
+      </div>
+
+      {/* Desktop layout */}
+      <div className="hidden md:flex gap-5 items-center justify-center z-10">
+        {/* Card */}
+        <div
+          onClick={expand ? () => setExpand() : undefined}
+          className={`relative h-[400px] rounded-2xl glass-card border border-white/10 overflow-hidden flex-shrink-0 transition-all duration-500 ease-in-out ${expand
+            ? "w-12 cursor-pointer hover:border-emerald-500/30 hover:bg-emerald-500/5"
+            : "w-[650px] shadow-[0_0_60px_rgba(0,0,0,0.5)]"
+            }`}
+        >
+          <div className={`absolute inset-0 transition-opacity duration-300 ${expand ? "opacity-0 pointer-events-none" : "opacity-100 delay-150"}`}>
+            <FontPart />
           </div>
+          <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${expand ? "opacity-100 delay-300" : "opacity-0 pointer-events-none"}`}>
+            <span className="[writing-mode:vertical-lr] text-[10px] tracking-widest uppercase text-emerald-400/40 hover:text-emerald-400 transition-colors font-mono select-none">
+              Show Overview
+            </span>
+          </div>
+        </div>
+
+        {/* Console */}
+        <div className={`h-[400px] rounded-xl flex-shrink-0 transition-all duration-500 ease-in-out ${expand ? "w-[650px]" : "w-12"}`}>
+          <Container expand={expand} setExpand={setExpand} />
+        </div>
+      </div>
+
+      {/* Mobile layout */}
+      <div className="md:hidden relative z-10 w-full max-w-[420px] h-[80vh]">
+        {/* Card — slides left out */}
+        <div
+          className={`absolute inset-0 rounded-2xl glass-card border border-white/10 overflow-hidden transition-all duration-500 ease-in-out ${expand ? "-translate-x-6 opacity-0 pointer-events-none" : "translate-x-0 opacity-100"
+            }`}
+        >
+          <FontPart />
+        </div>
+
+        {/* Console — slides in from right */}
+        <div
+          className={`absolute inset-0 rounded-xl transition-all duration-500 ease-in-out ${expand ? "translate-x-0 opacity-100 pointer-events-auto" : "translate-x-6 opacity-0 pointer-events-none"
+            }`}
+        >
+          <Container expand={expand} setExpand={setExpand} />
         </div>
       </div>
     </div>

@@ -64,14 +64,12 @@ const Host = forwardRef(function Host(
   };
 
   return (
-    <div className={`text-yellow-400 flex p-1 ${firaCode.className}`}>
-      <p
-        className="flex justify-center items-center"
-        style={{ fontFamily: "Fira Code, monospace" }}
-      >
-        @m-shahjalal <FaLongArrowAltRight size="20px" />
+    <div className={`flex items-center gap-2 p-1 text-sm font-mono ${firaCode.className}`}>
+      <p className="flex items-center gap-1 text-emerald-400 select-none">
+        <span>m-shahjalal</span>
+        <span className="text-cyan-400 font-bold">❯</span>
       </p>
-      <form onSubmit={handleTrigger}>
+      <form onSubmit={handleTrigger} className="flex-1">
         <input
           value={value}
           onChange={(e) => setValue(e.target.value)}
@@ -81,7 +79,8 @@ const Host = forwardRef(function Host(
           name="command"
           aria-autocomplete="none"
           autoComplete="off"
-          className="bg-transparent outline-none ml-1 -mt-[2px] text-green-500 w-full -translate-y-[2px]"
+          className="bg-transparent outline-none text-slate-200 w-full font-mono caret-emerald-400"
+          placeholder="type 'help'..."
         />
       </form>
     </div>
