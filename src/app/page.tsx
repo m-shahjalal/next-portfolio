@@ -36,7 +36,7 @@ export default function Home() {
             : "text-slate-400 hover:text-white"
             }`}
         >
-          Console
+          Terminal
         </button>
       </div>
 
@@ -61,8 +61,19 @@ export default function Home() {
         </div>
 
         {/* Console */}
-        <div className={`h-[400px] rounded-xl flex-shrink-0 transition-all duration-500 ease-in-out ${expand ? "w-[650px]" : "w-12"}`}>
-          <Container expand={expand} setExpand={setExpand} />
+        <div
+          onClick={!expand ? () => setExpand() : undefined}
+          className={`h-[400px] rounded-xl flex-shrink-0 transition-all duration-500 ease-in-out ${expand ? "w-[650px]" : "w-12 cursor-pointer hover:border-emerald-500/30"}`}
+        >
+          {/* Collapsed label — only shown when slim, lives here so it's never clipped by Container */}
+          {!expand && (
+            <div className="w-full h-full flex items-center justify-center glass-card rounded-xl border border-white/10 hover:bg-emerald-500/5 transition-colors duration-300">
+              <span className="[writing-mode:vertical-lr] text-[10px] tracking-widest uppercase text-emerald-400/40 hover:text-emerald-400 transition-colors duration-300 font-mono select-none">
+                Click to Expand Terminal
+              </span>
+            </div>
+          )}
+          {expand && <Container expand={expand} setExpand={setExpand} />}
         </div>
       </div>
 

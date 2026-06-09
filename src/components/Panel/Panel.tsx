@@ -40,14 +40,14 @@ const Panel = ({ onCollapse }: PanelProps) => {
 
         {/* Title */}
         <span className="text-[11px] tracking-wide text-emerald-400/70 font-mono">
-          bash — m-shahjalal@portfolio
+          bash — shahjalal.sh ~ ❯
         </span>
 
         {/* Collapse button */}
         <button
           onClick={(e) => { e.stopPropagation(); onCollapse(); }}
           className="p-1 rounded-md hover:bg-white/5 hover:text-emerald-400 text-slate-600 transition-all duration-200 cursor-pointer"
-          aria-label="Collapse console"
+          aria-label="Collapse terminal"
         >
           <LuArrowBigLeftDash size={16} />
         </button>

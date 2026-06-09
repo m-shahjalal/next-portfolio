@@ -7,54 +7,23 @@ export interface Command {
   type: OutputType;
   trigger?: string;
   inputValue?: string;
+  aiReply?: string;
+  isLoading?: boolean;
 }
 
 export const defaultText = "";
 
+// These bypass AI — terminal builtins that don't need a network call
+export const BYPASS_COMMANDS = new Set<InputList>([
+  InputList.clear,
+  InputList.exit,
+  InputList.pwd,
+  InputList.echo,
+  InputList.history,
+]);
+
 export const commands: Command[] = [
-  {
-    input: InputList.home,
-    output: () =>
-      `👋 Welcome! I'm Md. Shahjalal — Full-Stack AI Engineer.\nType "help" to see available commands.`,
-    type: OutputType.SUCCESS,
-  },
-  {
-    input: InputList.about,
-    output: () =>
-      `Full-Stack AI Engineer · 4+ yrs experience\nBuilding ERP, Inventory, E-Commerce, SaaS & AI platforms.\nStack: TypeScript · Node.js · NestJS · PostgreSQL · React/Next.js\nFocus: multi-tenant RBAC, DB optimization, cloud infra, team lead.`,
-    type: OutputType.INFO,
-  },
-  {
-    input: InputList.works,
-    output: () =>
-      `Notable Projects:\n\n` +
-      `1. AI Mapcast — AI geo-news platform\n   https://mapcast.live\n   Next.js · Hono · PostgreSQL · LeafletJS\n\n` +
-      `2. FileKit — File-sharing SaaS\n   https://themeforest.net\n   Node.js · Stripe · PostgreSQL · Magic-link OAuth\n\n` +
-      `3. HOMY — E-Commerce platform\n   https://e-homy.vercel.app\n   React · Node.js · MongoDB · Stripe\n\n` +
-      `GitHub: https://github.com/m-shahjalal`,
-    type: OutputType.LINKS,
-  },
-  {
-    input: InputList.experts,
-    output: () =>
-      `Frontend:  React · Next.js · Tailwind CSS · TanStack Query/Router\n` +
-      `Backend:   Node.js · NestJS · Express · Hono · REST API · Laravel\n` +
-      `Auth:      JWT · OAuth 2.0 · RBAC\n` +
-      `Database:  PostgreSQL · MongoDB · Prisma · Drizzle · TypeORM\n` +
-      `DevOps:    Docker · AWS · GitHub Actions · CI/CD · Vercel · Cloudflare\n` +
-      `Domain:    ERP · Inventory · E-Commerce · POS · Multi-tenant SaaS`,
-    type: OutputType.INFO,
-  },
-  {
-    input: InputList.contacts,
-    output: () =>
-      `📧  shahjalal.cloud@gmail.com\n` +
-      `📞  +880 1989 942856\n` +
-      `🌐  https://m-shahjalal.vercel.app\n` +
-      `💼  https://linkedin.com/in/m-shahjalal\n` +
-      `🐙  https://github.com/m-shahjalal`,
-    type: OutputType.LINKS,
-  },
+  // ── Terminal builtins (never go to AI) ──────────────────────────────────
   {
     input: InputList.echo,
     output: (value: any) => value,
@@ -66,55 +35,45 @@ export const commands: Command[] = [
     type: OutputType.INFO,
   },
   {
-    input: InputList.notFound,
-    output: () => `Command not found. Type "help" for available commands.`,
-    type: OutputType.ERROR,
-  },
-  {
-    input: InputList.hello,
-    output: () => "Hey! 👋 Type \"about\" to know more about me.",
-    type: OutputType.INFO,
-  },
-  {
-    input: InputList.hi,
-    output: () => "Hello! 👋 Type \"about\" to know more about me.",
-    type: OutputType.INFO,
-  },
-  {
-    input: InputList.fuck,
-    output: () => "Easy there 😅 — let's keep it professional.",
-    type: OutputType.INFO,
-  },
-  {
     input: InputList.history,
     output: (value) => value,
     type: OutputType.INFO,
   },
   {
+    input: InputList.exit,
+    output: () => "Closing console...",
+    type: OutputType.WORN,
+  },
+  // ── AI catch-all (everything else routes here) ───────────────────────────
+  {
+    input: InputList.ask,
+    output: (value: any) => value ?? "",
+    type: OutputType.AI,
+  },
+  // ── notFound kept for echo/pwd edge cases only ───────────────────────────
+  {
+    input: InputList.notFound,
+    output: () => `Command not found. Type "help" for available commands.`,
+    type: OutputType.ERROR,
+  },
+  {
     input: InputList.help,
     output: () => {
       const cmds = [
-        ["home", "Welcome message"],
-        ["about", "Who I am & what I do"],
-        ["works", "Projects I've built"],
-        ["experts", "Skills & tech stack"],
-        ["contacts", "Ways to reach me"],
+        ["help", "Show this help"],
         ["pwd", "Current directory"],
         ["history", "Command history"],
         ["echo <text>", "Print text"],
         ["clear", "Clear terminal"],
         ["exit", "Close console"],
+        ["<anything else>", "Ask AI about Shahjalal"],
       ];
       return (
         "Available commands:\n\n" +
-        cmds.map(([cmd, desc]) => `  ${cmd.padEnd(16)}${desc}`).join("\n")
+        cmds.map(([cmd, desc]) => `  ${cmd.padEnd(18)}${desc}`).join("\n") +
+        "\n\nTip: just type naturally — \"what projects has he built?\""
       );
     },
     type: OutputType.HELP,
-  },
-  {
-    input: InputList.exit,
-    output: () => "Closing console...",
-    type: OutputType.WORN,
   },
 ];

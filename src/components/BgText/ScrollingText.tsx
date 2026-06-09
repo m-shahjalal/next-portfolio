@@ -5,21 +5,22 @@ import logo from "@/images/logo.svg";
 import { useEffect, useRef } from "react";
 
 const text =
-  "JavaScript NodeJS TypeScript PHP Laravel VueJS NextJS Linux SQL Git Docker";
+  "TypeScript Node.js NestJS PostgreSQL React Next.js TailwindCSS Docker AWS GitHub Prisma Drizzle REST API CI/CD Vercel Cloudflare RBAC OAuth JWT MongoDB";
+
 const quotes = [
-  "Code is like humor. When you have to explain it, it's bad. - Cory House",
-  "Of course, bad code can be cleaned up. But it's very expensive.” — Robert C. Martin",
-  "Software is like sex: it's better when it's free. - Linus Torvalds",
-  "There is always one more bug to fix.  - Ellen Ullman",
-  "Talk is cheap. Show me the code. ― Linus Torvalds",
-  "If, at first, you do not succeed, call it version 1.0. ― Khayri R.R. Woulfe",
-  "Computers are fast; developers keep them slow. - Anonymous",
-  "Experience is the name everyone gives to their mistakes. - Oscar Wilde",
-  "Programming is the art of algorithm design and the craft of debugging errant code. - Ellen Ullman",
-  "Confusion is part of programming. ― Felienne Hermans",
+  "First, solve the problem. Then, write the code. - John Johnson",
+  "Any fool can write code that a computer can understand. Good programmers write code that humans can understand. - Martin Fowler",
+  "The best code is no code at all. - Jeff Atwood",
+  "Make it work, make it right, make it fast. - Kent Beck",
+  "Simplicity is the soul of efficiency. - Austin Freeman",
+  "The function of good software is to make the complex appear simple. - Grady Booch",
+  "Talk is cheap. Show me the code. - Linus Torvalds",
+  "An API that isn't comprehensible isn't usable. - James Gosling",
+  "Clean code always looks like it was written by someone who cares. - Robert C. Martin",
+  "In programming, the hard part isn't solving problems, but deciding what problems to solve. - Paul Graham",
 ];
 
-const selectedQuote = quotes[Math.floor(Math.random() * 10)];
+const selectedQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
 const ScrollingText = () => {
   const mouseRef = useRef<HTMLDivElement>(null);

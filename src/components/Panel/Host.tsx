@@ -1,21 +1,11 @@
 import { InputList } from "@/enums/outputType";
-import { commands, defaultText } from "@/lib/commands";
+import { BYPASS_COMMANDS, commands, defaultText } from "@/lib/commands";
 import useGlobalStore from "@/store/useGlobalStore";
 import { uuid } from "@/utils/uniqueId";
 import { Fira_Code } from "next/font/google";
-import {
-  FormEvent,
-  KeyboardEvent,
-  LegacyRef,
-  forwardRef,
-  useEffect,
-} from "react";
-import { FaLongArrowAltRight } from "react-icons/fa";
+import { FormEvent, KeyboardEvent, LegacyRef, forwardRef } from "react";
 
-const firaCode = Fira_Code({
-  weight: "400",
-  preload: false,
-});
+const firaCode = Fira_Code({ weight: "400", preload: false });
 
 const Host = forwardRef(function Host(
   _,
@@ -24,38 +14,47 @@ const Host = forwardRef(function Host(
   const value = useGlobalStore((state) => state.typing);
   const setValue = useGlobalStore((state) => state.handleInput);
   const handleCommand = useGlobalStore((state) => state.handleCommand);
+  const handleAskCommand = useGlobalStore((state) => state.handleAskCommand);
   const clearHistory = useGlobalStore((state) => state.clearHistory);
-  const clearInput = useGlobalStore((state) => state.clearInput);
   const toggleTerminal = useGlobalStore((state) => state.toggleTerminal);
 
   const handleTrigger = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const input = value.toLowerCase().trim();
-    if (!input) return;
-    if (input === InputList.clear) return clearHistory();
+    const raw = value.trim();
+    if (!raw) return;
 
-    const target = commands.find((item) => {
-      return input.startsWith("echo")
-        ? item.input === InputList.echo
-        : item.input === input;
-    });
+    const lower = raw.toLowerCase();
 
-    if (target) {
-      target.id = uuid();
-      target.inputValue = value;
-      if (target.input === InputList.exit) {
-        toggleTerminal();
-        return clearHistory();
-      }
-      return handleCommand({ ...target });
+    // ── Terminal builtins ──────────────────────────────────────────────────
+    if (lower === InputList.clear) return clearHistory();
+
+    if (lower === InputList.exit) {
+      toggleTerminal();
+      return clearHistory();
     }
 
-    const notFound = commands.find((item) => item.input === InputList.notFound);
-    if (notFound) {
-      notFound.id = uuid();
-      notFound.inputValue = value;
-      handleCommand({ ...notFound });
+    if (lower === InputList.pwd || lower === InputList.history || lower === InputList.help) {
+      const target = commands.find((c) => c.input === (lower as InputList));
+      if (target) {
+        const cmd = { ...target, id: uuid(), inputValue: raw };
+        // history output needs the store history — handled in History.tsx
+        return handleCommand(cmd);
+      }
+    }
+
+    if (lower.startsWith("echo")) {
+      const target = commands.find((c) => c.input === InputList.echo);
+      if (target) {
+        return handleCommand({ ...target, id: uuid(), inputValue: raw });
+      }
+    }
+
+    // ── Everything else → AI ───────────────────────────────────────────────
+    const askCmd = commands.find((c) => c.input === InputList.ask);
+    if (askCmd) {
+      const trimmed = raw.slice(0, 300); // hard cap before sending
+      handleAskCommand({ ...askCmd, id: uuid(), inputValue: trimmed });
     }
   };
 
@@ -72,7 +71,7 @@ const Host = forwardRef(function Host(
       <form onSubmit={handleTrigger} className="flex-1">
         <input
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => setValue(e.target.value.slice(0, 300))}
           onKeyDown={handleKeyDown}
           ref={ref}
           type="text"
@@ -80,7 +79,7 @@ const Host = forwardRef(function Host(
           aria-autocomplete="none"
           autoComplete="off"
           className="bg-transparent outline-none text-slate-200 w-full font-mono caret-emerald-400"
-          placeholder="type 'help'..."
+          placeholder="ask me anything about Shahjalal..."
         />
       </form>
     </div>

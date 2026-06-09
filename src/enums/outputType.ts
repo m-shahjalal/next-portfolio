@@ -5,6 +5,8 @@ export enum OutputType {
   "WORN" = "worn",
   "ERROR" = "error",
   "HELP" = "help",
+  "AI" = "ai",
+  "AI_LOADING" = "ai_loading",
 }
 
 export enum InputList {
@@ -23,4 +25,5 @@ export enum InputList {
   "fuck" = "fuck",
   "notFound" = "notFound",
   "help" = "help",
+  "ask" = "ask",
 }
