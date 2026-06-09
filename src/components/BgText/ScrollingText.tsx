@@ -24,13 +24,23 @@ const selectedQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
 const ScrollingText = () => {
   const mouseRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    document.addEventListener("mousemove", (e) => {
-      if (!mouseRef.current) return;
-      mouseRef.current.style.left = e.pageX + "px";
-      mouseRef.current.style.top = e.pageY + "px";
-    });
-  });
+    let raf: number;
+    const handler = (e: MouseEvent) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        if (!mouseRef.current) return;
+        mouseRef.current.style.left = e.pageX + "px";
+        mouseRef.current.style.top = e.pageY + "px";
+      });
+    };
+    document.addEventListener("mousemove", handler);
+    return () => {
+      cancelAnimationFrame(raf);
+      document.removeEventListener("mousemove", handler);
+    };
+  }, []);
 
   return (
     <>
@@ -45,7 +55,7 @@ const ScrollingText = () => {
         width={250}
         alt="logo"
       />
-      <div className="overflow-hidden inline-block whitespace-nowrap fixed  left-full opacity-[.02] animate-scrollReverse -bottom-10 text-[200px] font-bold">
+      <div className="overflow-hidden inline-block whitespace-nowrap fixed left-full opacity-[.02] animate-scrollReverse -bottom-10 text-[200px] font-bold">
         {selectedQuote}
       </div>
     </>

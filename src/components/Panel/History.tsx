@@ -1,11 +1,9 @@
 import { InputList, OutputType } from "@/enums/outputType";
 import { Command } from "@/lib/commands";
 import useGlobalStore from "@/store/useGlobalStore";
-import { Fira_Code } from "next/font/google";
+import { firaCode } from "@/lib/fonts";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-
-const firaCode = Fira_Code({ weight: "400", preload: false });
 
 export const History = ({ command }: { command: Command }) => {
   const history = useGlobalStore((state) => state.history);

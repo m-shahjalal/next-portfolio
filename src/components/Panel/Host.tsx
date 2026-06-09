@@ -1,11 +1,9 @@
 import { InputList } from "@/enums/outputType";
-import { BYPASS_COMMANDS, commands, defaultText } from "@/lib/commands";
+import { commands, defaultText } from "@/lib/commands";
 import useGlobalStore from "@/store/useGlobalStore";
 import { uuid } from "@/utils/uniqueId";
-import { Fira_Code } from "next/font/google";
+import { firaCode } from "@/lib/fonts";
 import { FormEvent, KeyboardEvent, LegacyRef, forwardRef } from "react";
-
-const firaCode = Fira_Code({ weight: "400", preload: false });
 
 const Host = forwardRef(function Host(
   _,

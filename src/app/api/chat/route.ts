@@ -19,6 +19,8 @@ function isRateLimited(ip: string): boolean {
     const now = Date.now();
     const entry = ipMap.get(ip);
     if (!entry || now > entry.resetAt) {
+        // prune expired entry to prevent unbounded map growth
+        if (entry) ipMap.delete(ip);
         ipMap.set(ip, { count: 1, resetAt: now + CONFIG.rateWindow });
         return false;
     }

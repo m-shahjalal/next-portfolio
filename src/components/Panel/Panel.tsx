@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, memo } from "react";
 import Host from "./Host";
-import { Fira_Code } from "next/font/google";
+import { firaCode } from "@/lib/fonts";
 import useGlobalStore from "@/store/useGlobalStore";
 import { History } from "./History";
 import { LuArrowBigLeftDash } from "react-icons/lu";
 
-const firaCode = Fira_Code({ subsets: ["latin"] });
+const MemoHistory = memo(History);
 
 interface PanelProps {
   onCollapse: () => void;
@@ -57,7 +57,7 @@ const Panel = ({ onCollapse }: PanelProps) => {
       <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-2">
         {history.map((item) => (
           <div className="flex flex-col text-sm" key={item.id}>
-            <History command={item} />
+            <MemoHistory command={item} />
           </div>
         ))}
         <Host ref={focusRef} />

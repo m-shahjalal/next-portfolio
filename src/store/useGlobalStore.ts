@@ -1,7 +1,6 @@
-import { create } from "zustand";
+import { create, type StateCreator } from "zustand";
 import { logger } from "./logger";
 import { WindowState } from "@/enums/windowState";
-import { InputList } from "@/enums/outputType";
 import { Command, commands, defaultText } from "@/lib/commands";
 
 interface GlobalState {
@@ -33,112 +32,115 @@ const initialState: Pick<GlobalStore, keyof GlobalState> = {
   isExpand: false,
 };
 
-const useGlobalStore = create<GlobalStore>()(
-  logger<GlobalStore>(
-    (set, get) => ({
-      ...initialState,
-      handleWindow: (window) => {
-        set({ windowState: window });
-      },
-      handleCommand: (command) => {
-        set((state) => ({
-          currentHistory: [...state.currentHistory, command],
-          typing: "",
-        }));
-      },
-      handleAskCommand: (command) => {
-        // add loading entry immediately
-        const loadingCommand: Command = {
-          ...command,
-          isLoading: true,
-          aiReply: undefined,
-        };
-        set((state) => ({
-          currentHistory: [...state.currentHistory, loadingCommand],
-          typing: "",
-        }));
+const storeCreator: StateCreator<GlobalStore> = (set, get) => ({
+  ...initialState,
 
-        const question = command.inputValue?.trim() ?? "";
+  handleWindow: (window) => set({ windowState: window }),
 
-        fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: question }),
-        })
-          .then(async (res) => {
-            if (!res.ok || !res.body) {
-              const data = await res.json().catch(() => ({}));
-              get().updateCommandReply(
-                command.id as number,
-                data.error ?? "AI service error. Try again.",
-                true
-              );
-              return;
-            }
+  handleCommand: (command) =>
+    set((state) => ({
+      currentHistory: [...state.currentHistory, command],
+      typing: "",
+    })),
 
-            const reader = res.body.getReader();
-            const decoder = new TextDecoder();
-            let accumulated = "";
+  handleAskCommand: (command) => {
+    set((state) => ({
+      currentHistory: [
+        ...state.currentHistory,
+        { ...command, isLoading: true, aiReply: undefined },
+      ],
+      typing: "",
+    }));
 
-            // mark as no longer loading, start streaming
-            set((state) => ({
-              currentHistory: state.currentHistory.map((c) =>
-                c.id === command.id ? { ...c, isLoading: false, aiReply: "" } : c
-              ),
-            }));
+    const question = command.inputValue?.trim() ?? "";
 
-            const pump = async (): Promise<void> => {
-              const { done, value } = await reader.read();
-              if (done) return;
+    fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: question }),
+    })
+      .then(async (res) => {
+        if (!res.ok || !res.body) {
+          const data = await res.json().catch(() => ({}));
+          get().updateCommandReply(
+            command.id as number,
+            data.error ?? "AI service error. Try again.",
+            true
+          );
+          return;
+        }
 
-              // toTextStreamResponse sends raw text chunks — decode and append directly
-              accumulated += decoder.decode(value, { stream: true });
-              set((state) => ({
-                currentHistory: state.currentHistory.map((c) =>
-                  c.id === command.id ? { ...c, aiReply: accumulated } : c
-                ),
-              }));
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let accumulated = "";
 
-              return pump();
-            };
-
-            await pump().catch(() => {
-              get().updateCommandReply(
-                command.id as number,
-                accumulated || "Stream interrupted.",
-                !accumulated
-              );
-            });
-          })
-          .catch(() => {
-            get().updateCommandReply(
-              command.id as number,
-              "Network error. Check connection.",
-              true
-            );
-          });
-      },
-      updateCommandReply: (id, reply, error = false) => {
+        // Transition from loading spinner to streaming text
         set((state) => ({
           currentHistory: state.currentHistory.map((c) =>
-            c.id === id
-              ? { ...c, isLoading: false, aiReply: reply, type: error ? "error" as any : c.type }
-              : c
+            c.id === command.id ? { ...c, isLoading: false, aiReply: "" } : c
           ),
         }));
-      },
-      clearHistory: () =>
-        set((state) => ({
-          history: [...state.history, ...state.currentHistory],
-          currentHistory: [],
-          typing: "",
-        })),
-      clearInput: () => set({ typing: "" }),
-      handleInput: (str) => set({ typing: str }),
-      toggleTerminal: () => set((state) => ({ isExpand: !state.isExpand })),
-    }),
-    "Zustand triggered =>"
-  )
+
+        // Iterative loop — avoids deep recursive call stack on long streams
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            accumulated += decoder.decode(value, { stream: true });
+            set((state) => ({
+              currentHistory: state.currentHistory.map((c) =>
+                c.id === command.id ? { ...c, aiReply: accumulated } : c
+              ),
+            }));
+          }
+        } catch {
+          get().updateCommandReply(
+            command.id as number,
+            accumulated || "Stream interrupted.",
+            !accumulated
+          );
+        }
+      })
+      .catch(() => {
+        get().updateCommandReply(
+          command.id as number,
+          "Network error. Check connection.",
+          true
+        );
+      });
+  },
+
+  updateCommandReply: (id, reply, error = false) => {
+    set((state) => ({
+      currentHistory: state.currentHistory.map((c) =>
+        c.id === id
+          ? {
+            ...c,
+            isLoading: false,
+            aiReply: reply,
+            type: error ? ("error" as any) : c.type,
+          }
+          : c
+      ),
+    }));
+  },
+
+  clearHistory: () =>
+    set((state) => ({
+      history: [...state.history, ...state.currentHistory],
+      currentHistory: [],
+      typing: "",
+    })),
+
+  clearInput: () => set({ typing: "" }),
+  handleInput: (str) => set({ typing: str }),
+  toggleTerminal: () => set((state) => ({ isExpand: !state.isExpand })),
+});
+
+const useGlobalStore = create<GlobalStore>()(
+  process.env.NODE_ENV === "development"
+    ? logger<GlobalStore>(storeCreator, "Zustand =>")
+    : storeCreator
 );
 
 export default useGlobalStore;

@@ -1,6 +1,4 @@
-import Image from "next/image";
 import React from "react";
-import logo from "@/images/logo.svg";
 
 const Header = () => {
   return (
